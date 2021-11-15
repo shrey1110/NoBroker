@@ -28,16 +28,16 @@ public class Nobroker  {
     @FindBy(xpath = "//*[@id='searchCity']/div/div[2]/div")
     WebElement SearchCityDropDpwnButton;
 
-    @FindBy(xpath = "/html/body/div[3]/div/div/div[1]/div[5]/div[1]/div/div/div/div/div[2]")
+    @FindBy(xpath = "//div[5]/div[1]//*[@id='searchCity']//div/div[2]")
     WebElement ApartmentTypeDropDownButton;
 
     @FindBy(xpath = "//*[@type='button' and text()='Search']")
     WebElement SearchButton;
 
-    @FindBy(xpath = "/html/body/div[5]/div/main/div[3]/div[2]/div[2]/div/div/article/div[1]")
-    List<WebElement> property;
+    @FindBy(id = "//*[@id='propertyCardConatiner']/div[1]")
+    WebElement propertyCard;
 
-    @FindBy(xpath = "/html/body/div[5]/div/main/div[3]/div[2]/div[2]/div/div/article/div[2]/div/div")
+    @FindBy(xpath = "//article/div[2]/div/div")
     List<WebElement> Apartment;
 
     @FindBy(xpath = "//article//section[1]/div[1]/a")
@@ -64,7 +64,8 @@ public class Nobroker  {
     public void searchLocality(String[] Locality) throws InterruptedException {
         for(int i=0;i<Locality.length;i++){
             SearchLocality.sendKeys(Locality[i]);
-            Thread.sleep(4000);
+            //Thread.sleep(4000);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='app']/div/div/div[1]/div[4]/div[2]/div/div[2]/div")));
             List<WebElement> elements = driver.findElements(By.xpath("//*[@id='app']/div/div/div[1]/div[4]/div[2]/div/div[2]/div")); // to locate Locality dropdown
             for( WebElement element:elements)
             {
@@ -73,7 +74,7 @@ public class Nobroker  {
                 if(element.getAttribute("innerHTML").contains(str[str.length-1])) // to select locality by checking last word in localoty
                 {
                     element.click();
-                    Thread.sleep(2000);
+                    Thread.sleep(1000);
                     break;
 
                 }
@@ -87,16 +88,16 @@ public class Nobroker  {
     public void selectCity(String City) throws InterruptedException {
         SearchCityDropDpwnButton.click();
         driver.findElement(By.xpath("//*[text()='"+City+"']")).click(); // to slect city
-        Thread.sleep(2000);
+        //Thread.sleep(1000);
     }
 
     public void selectApartmentType(String[] Type) throws InterruptedException {
         WebElement Category_Body = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/div/div/div[1]/div[5]/div[1]/div/div/div/div/div[2]")));
         Category_Body.click();
-        Thread.sleep(3000);
+        //Thread.sleep(3000);
         for(int i=0;i<Type.length;i++){
             driver.findElement(By.xpath("//*[text()='"+Type[i]+"']")).click(); //to select apartment type
-            Thread.sleep(3000);
+            //Thread.sleep(2000);
         }
 
     }
@@ -106,7 +107,8 @@ public class Nobroker  {
     }
 
     public void getFourthApartmentDetails() throws InterruptedException {
-        Thread.sleep(15000);
+        //Thread.sleep(15000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='propertyCardConatiner']/div[1]")));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", Apartment.get(3)); //to scroll into view for 4th property
         Apartment.get(3).click();
         ArrayList<String> handles=new ArrayList<String>(driver.getWindowHandles());
